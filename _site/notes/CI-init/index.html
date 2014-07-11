@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh" lang="zh-cn">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="author" content="J Zhang" />
+    <title>CI框架的初始配置 | J Zhang</title>
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link href="/feed/" rel="alternate" title="J Zhang" type="application/atom+xml" />
+    <!--<link rel="stylesheet" media="all" href="/media/css/han.css">-->
+    
+    <link rel="stylesheet" href="/media/css/style.css">
+    <link rel="stylesheet" href="/media/css/pygments.css">
+    <link rel="stylesheet" href="/media/css/highligh.css">
+    <!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>-->
+    <!--<script type="text/javascript" src="/media/js/han.js"></script>-->
+    <script type="text/javascript" src="/media/js/jquery-1.7.1.min.js"></script>
+  </head>
+  <script type="text/javascript">
+    function setTimeSpan(){
+    	var date = new Date();
+    	timeSpan.innerText=date.format('yyyy-MM-dd hh:mm:ss');
+    }
+    
+    Date.prototype.format = function(format)
+		{
+    var o =
+    	{
+    	    "M+" : this.getMonth()+1, //month
+    	    "d+" : this.getDate(),    //day
+    	    "h+" : this.getHours(),   //hour
+    	    "m+" : this.getMinutes(), //minute
+    	    "s+" : this.getSeconds(), //second
+    	    "q+" : Math.floor((this.getMonth()+3)/3),  //quarter
+    	    "S" : this.getMilliseconds() //millisecond
+    	}
+    	if(/(y+)/.test(format))
+    	format=format.replace(RegExp.$1,(this.getFullYear()+"").substr(4 - RegExp.$1.length));
+    	for(var k in o)
+    	if(new RegExp("("+ k +")").test(format))
+    	format = format.replace(RegExp.$1,RegExp.$1.length==1 ? o[k] : ("00"+ o[k]).substr((""+ o[k]).length));
+    	return format;
+		}
+  </script>
+  <body onLoad="setInterval(setTimeSpan,1000);">
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+        <h1>CI框架的初始配置</h1>
+        </header>
+        <nav>
+        <span><a title="home page" class="" href="/">Home</a></span>
+        <span><a title="about" class="" href="/about/">About</a></span>
+        <span><a title="categories" class="" href="/categories/">Categories</a></span>
+        <span><a title="tags" class="" href="/tags/">Tags</a></span>
+        <span><a title="tags" class="" href="/archive/">Archive</a></span>
+        </nav>
+        <article class="content">
+        <section>
+2014-05-17
+
+<span class="categories">
+ in 
+  <a href="/categories/#notes" title="notes">notes</a>&nbsp;
+  
+</span>, 
+
+
+<span class="tags">
+  tags:
+  
+  <a href="/tags/#PHP" title="PHP">PHP</a>&nbsp;
+  
+  <a href="/tags/#MySQL" title="MySQL">MySQL</a>&nbsp;
+  
+  <a href="/tags/#Apache" title="Apache">Apache</a>&nbsp;
+  
+  <a href="/tags/#CI" title="CI">CI</a>&nbsp;
+  
+</span>
+
+</section>
+
+<section class="post">
+<p>因为B/S课程要求，需要做一个比价网站，由于之前使用过<a href="http://codeigniter.org.cn/">CI(codeigniter)</a>框架，所以这次也准备用这个框架。但是由于之前使用时初始配置不是我自己配的，配置起来也花了一点时间。</p>
+
+<h2>Config中的配置</h2>
+
+<hr />
+
+<p><em>1.</em> 首先需要配置的是默认的控制器，CI默认使用的是<code>welcome</code>控制器，这个可以在<code>config</code>目录下的<code>routes.php</code>中设置：</p>
+
+<div class="highlight"><pre><code class="php"><span class="cp">&lt;?php</span> 
+    <span class="nv">$route</span><span class="p">[</span><span class="s1">&#39;default_controller&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;welcome&quot;</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+
+<p>将wlecome改为需要的默认控制器即可。<br/>
+<em>2.</em> 然后需要配置数据库的帐号密码，以及默认使用的数据库，这个要在<code>config</code>目录下的<code>database.php</code>中设置：</p>
+
+<div class="highlight"><pre><code class="php"><span class="cp">&lt;?php</span> 
+    <span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;root&quot;</span><span class="p">;</span>
+    <span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;password&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+    <span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;database&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+
+<p>根据自己情况填写上述三项即可。<br/>
+<em>3.</em> 一般情况下，使用CI框架是经常会用到<code>base_url</code>，这个可以在<code>config</code>目录下的<code>config.php</code>中设置：</p>
+
+<div class="highlight"><pre><code class="php"><span class="cp">&lt;?php</span> 
+    <span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;base_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+
+<p><em>4.</em> 除此之外，在使用CI时，如果需要频繁使用某个库，那么每次需要使用加载库会显得非常麻烦，那么可以张<code>config</code>目录下的<code>autoload.php</code>中设置自动加载的库，这样就不用麻烦地每次加载了。</p>
+
+<h2>URL重写</h2>
+
+<p>CI框架在需要访问某个控制器的某个方法时，默认URL是需要<code>http://www.xxx.com/index.php/controller/method</code>。这样中间的<code>index.php</code>就给人很多余的感觉，所以大部分情况下是想要去掉这个的。</p>
+
+<p><em>1.</em> 首先需要让apache服务器支持url重写，这个要在apahce的<code>httpd.conf</code>中修改，打开这个文件，搜索rewrite，可以看到</p>
+
+<pre><code>    #LoadModule rewrite_module modules/mod_rewrite.so
+</code></pre>
+
+<p>将最前面的<code>#</code>注释符去掉即可。<br/>
+<em>2.</em> 然后就可以对重写进行定义了，可以在CI框架的根目录下新建一个<code>.htaccess</code>文件：</p>
+
+<blockquote><p><IfModule mod_rewrite.c>
+    RewriteEngine On<br/>
+    RewriteBase /my_project/<br/>
+    RewriteCond $1 ^(application|system|private|logs)<br/>
+    RewriteRule ^(.<em>)$ index.php/access_denied/$1 [PT,L]<br/>
+    RewriteCond $1 ^(index.php|robots.txt|favicon.ico|public|assets|css|js|images|resource)<br/>
+    RewriteRule ^(.</em>)$ - [PT,L]<br/>
+    RewriteRule ^(.*)$ index.php/$1 [PT,L]<br/>
+</IfModule></p></blockquote>
+
+<p>其中<code>my_project</code>替换为自己的项目名，即在web根目录下这个项目的文件夹名。</p>
+
+</section>
+<section class="meta">
+
+<span class="author">
+  <a href="http://github.com/zjian1993">J Zhang</a>
+</span>
+<span class="time">
+  /
+  <time datetime="2014-05-17">2014-05-17</time>
+</span>
+<br/>
+<br/>
+<span>
+	<a  href="http://github.com/zjian1993/notes/php-apache-mysql-installation/" class="pageNav"  >Previous</a>
+	&nbsp;&nbsp;&nbsp;
+	<a   class="pageNavInvalid"  >Next</a>
+</span>
+</section>
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"zjian1993"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->
+
+<!--
+<script type="text/javascript">
+$(function(){
+  $(document).keydown(function(e) {
+    var url = false;
+        if (e.which == 37 || e.which == 74) {  // Left arrow and J
+            
+        url = 'http://github.com/zjian1993/notes/php-apache-mysql-installation/';
+        
+        }
+        else if (e.which == 39 || e.which == 75) {  // Right arrow and K
+            
+        }
+        if (url) {
+            window.location = url;
+        }
+  });
+})
+</script>
+-->
+
+
+        </article>
+      </div>
+
+    <footer>
+        <p><small>Powered by <a href="https://github.com/mojombo/jekyll">Jekyll</a> & <a href="http://pages.github.com">GitHub</a> | Copyright 2014 - 2014 by <a href="/about/">zjian1993</a></small></p>
+    </footer>
+
+    </div>
+    
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-11490513-1']);
+      _gaq.push(['_setDomainName', 'dannyli.net']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+    
+  </body>
+</html>

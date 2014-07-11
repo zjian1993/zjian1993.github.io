@@ -1,0 +1,7 @@
+markdown: rdiscount
+permalink: /:categories/:title/
+url: http://dannyli.net
+author: J Zhang
+safe: true
+paginate: 16
+

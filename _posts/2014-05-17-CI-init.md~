@@ -1,0 +1,73 @@
+---
+layout: post
+title:  "CI框架的初始配置"
+date:   2014-05-17 14:20:11
+categories: 
+- Notes 
+tags:
+- PHP
+- MySQL
+- Apache
+- CI
+
+---
+
+因为B/S课程要求，需要做一个比价网站，由于之前使用过[CI(codeigniter)](http://codeigniter.org.cn/)框架，所以这次也准备用这个框架。但是由于之前使用时初始配置不是我自己配的，配置起来也花了一点时间。
+
+## Config中的配置
+---
+
+_1._ 首先需要配置的是默认的控制器，CI默认使用的是`welcome`控制器，这个可以在`config`目录下的`routes.php`中设置：
+{% highlight php %}
+<?php 
+	$route['default_controller'] = "welcome";
+?>
+{% endhighlight %}
+将wlecome改为需要的默认控制器即可。  
+_2._ 然后需要配置数据库的帐号密码，以及默认使用的数据库，这个要在`config`目录下的`database.php`中设置：
+{% highlight php %}
+<?php 
+	$db['default']['username'] = "root";
+	$db['default']['password'] = "";
+	$db['default']['database'] = "";
+?>
+{% endhighlight %}
+根据自己情况填写上述三项即可。  
+_3._ 一般情况下，使用CI框架是经常会用到`base_url`，这个可以在`config`目录下的`config.php`中设置：
+{% highlight php %}
+<?php 
+	$config['base_url'] = "";
+?>
+{% endhighlight %}
+_4._ 除此之外，在使用CI时，如果需要频繁使用某个库，那么每次需要使用加载库会显得非常麻烦，那么可以张`config`目录下的`autoload.php`中设置自动加载的库，这样就不用麻烦地每次加载了。  
+
+
+## URL重写
+
+CI框架在需要访问某个控制器的某个方法时，默认URL是需要`http://www.xxx.com/index.php/controller/method`。这样中间的`index.php`就给人很多余的感觉，所以大部分情况下是想要去掉这个的。
+
+_1._ 首先需要让apache服务器支持url重写，这个要在apahce的`httpd.conf`中修改，打开这个文件，搜索rewrite，可以看到
+
+		#LoadModule rewrite_module modules/mod_rewrite.so
+
+将最前面的`#`注释符去掉即可。  
+_2._ 然后就可以对重写进行定义了，可以在CI框架的根目录下新建一个`.htaccess`文件：
+><IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteBase /my_project/
+	RewriteCond $1 ^(application|system|private|logs)
+	RewriteRule ^(.*)$ index.php/access_denied/$1 [PT,L]
+	RewriteCond $1 ^(index\.php|robots\.txt|favicon\.ico|public|assets|css|js|images|resource)
+	RewriteRule ^(.*)$ - [PT,L]
+	RewriteRule ^(.*)$ index.php/$1 [PT,L]
+</IfModule>
+
+其中`my_project`替换为自己的项目名，即在web根目录下这个项目的文件夹名。
+
+
+
+
+
+
+
+
