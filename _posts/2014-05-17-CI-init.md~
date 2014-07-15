@@ -53,13 +53,13 @@ _1._ 首先需要让apache服务器支持url重写，这个要在apahce的`httpd
 将最前面的`#`注释符去掉即可。  
 _2._ 然后就可以对重写进行定义了，可以在CI框架的根目录下新建一个`.htaccess`文件：
 ><IfModule mod_rewrite.c>
-	RewriteEngine On
-	RewriteBase /my_project/
-	RewriteCond $1 ^(application|system|private|logs)
-	RewriteRule ^(.*)$ index.php/access_denied/$1 [PT,L]
-	RewriteCond $1 ^(index\.php|robots\.txt|favicon\.ico|public|assets|css|js|images|resource)
-	RewriteRule ^(.*)$ - [PT,L]
-	RewriteRule ^(.*)$ index.php/$1 [PT,L]
+	RewriteEngine On  
+	RewriteBase /my_project/  
+	RewriteCond $1 ^(application|system|private|logs)  
+	RewriteRule ^(.*)$ index.php/access_denied/$1 [PT,L]  
+	RewriteCond $1 ^(index\.php|robots\.txt|favicon\.ico|public|assets|css|js|images|resource)  
+	RewriteRule ^(.*)$ - [PT,L]  
+	RewriteRule ^(.*)$ index.php/$1 [PT,L]  
 </IfModule>
 
 其中`my_project`替换为自己的项目名，即在web根目录下这个项目的文件夹名。

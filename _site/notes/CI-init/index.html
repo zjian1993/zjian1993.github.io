@@ -116,6 +116,8 @@
 
 <h2>URL重写</h2>
 
+<hr />
+
 <p>CI框架在需要访问某个控制器的某个方法时，默认URL是需要<code>http://www.xxx.com/index.php/controller/method</code>。这样中间的<code>index.php</code>就给人很多余的感觉，所以大部分情况下是想要去掉这个的。</p>
 
 <p><em>1.</em> 首先需要让apache服务器支持url重写，这个要在apahce的<code>httpd.conf</code>中修改，打开这个文件，搜索rewrite，可以看到</p>
@@ -153,7 +155,7 @@
 <span>
 	<a  href="http://github.com/zjian1993/notes/php-apache-mysql-installation/" class="pageNav"  >Previous</a>
 	&nbsp;&nbsp;&nbsp;
-	<a   class="pageNavInvalid"  >Next</a>
+	<a  href="http://github.com/zjian1993/notes/copy-link/" class="pageNav"  >Next</a>
 </span>
 </section>
 <!-- Duoshuo Comment BEGIN -->
@@ -183,6 +185,8 @@ $(function(){
         }
         else if (e.which == 39 || e.which == 75) {  // Right arrow and K
             
+        url = 'http://github.com/zjian1993/notes/copy-link/';
+        
         }
         if (url) {
             window.location = url;
