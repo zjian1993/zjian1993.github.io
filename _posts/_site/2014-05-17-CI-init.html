@@ -1,0 +1,53 @@
+<p>因为B/S课程要求，需要做一个比价网站，由于之前使用过<a href="http://codeigniter.org.cn/">CI(codeigniter)</a>框架，所以这次也准备用这个框架。但是由于之前使用时初始配置不是我自己配的，配置起来也花了一点时间。</p>
+
+<h2 id="config">Config中的配置</h2>
+<hr />
+
+<p><em>1.</em> 首先需要配置的是默认的控制器，CI默认使用的是<code>welcome</code>控制器，这个可以在<code>config</code>目录下的<code>routes.php</code>中设置：</p>
+
+<div class="highlight"><pre><code class="php"><span class="cp">&lt;?php</span> 
+	<span class="nv">$route</span><span class="p">[</span><span class="s1">&#39;default_controller&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;welcome&quot;</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>将wlecome改为需要的默认控制器即可。<br />
+<em>2.</em> 然后需要配置数据库的帐号密码，以及默认使用的数据库，这个要在<code>config</code>目录下的<code>database.php</code>中设置：</p>
+
+<div class="highlight"><pre><code class="php"><span class="cp">&lt;?php</span> 
+	<span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;root&quot;</span><span class="p">;</span>
+	<span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;password&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+	<span class="nv">$db</span><span class="p">[</span><span class="s1">&#39;default&#39;</span><span class="p">][</span><span class="s1">&#39;database&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>根据自己情况填写上述三项即可。<br />
+<em>3.</em> 一般情况下，使用CI框架是经常会用到<code>base_url</code>，这个可以在<code>config</code>目录下的<code>config.php</code>中设置：</p>
+
+<div class="highlight"><pre><code class="php"><span class="cp">&lt;?php</span> 
+	<span class="nv">$config</span><span class="p">[</span><span class="s1">&#39;base_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+<span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p><em>4.</em> 除此之外，在使用CI时，如果需要频繁使用某个库，那么每次需要使用加载库会显得非常麻烦，那么可以张<code>config</code>目录下的<code>autoload.php</code>中设置自动加载的库，这样就不用麻烦地每次加载了。  </p>
+
+<h2 id="url">URL重写</h2>
+<hr />
+
+<p>CI框架在需要访问某个控制器的某个方法时，默认URL是需要<code>http://www.xxx.com/index.php/controller/method</code>。这样中间的<code>index.php</code>就给人很多余的感觉，所以大部分情况下是想要去掉这个的。</p>
+
+<p><em>1.</em> 首先需要让apache服务器支持url重写，这个要在apahce的<code>httpd.conf</code>中修改，打开这个文件，搜索rewrite，可以看到</p>
+
+<pre><code>	#LoadModule rewrite_module modules/mod_rewrite.so
+</code></pre>
+
+<p>将最前面的<code>#</code>注释符去掉即可。<br />
+<em>2.</em> 然后就可以对重写进行定义了，可以在CI框架的根目录下新建一个<code>.htaccess</code>文件：
+&gt;<ifmodule mod_rewrite.c="">
+	RewriteEngine On  
+	RewriteBase /my_project/  
+	RewriteCond $1 ^(application|system|private|logs)  
+	RewriteRule ^(.*)$ index.php/access_denied/$1 [PT,L]  
+	RewriteCond $1 ^(index\.php|robots\.txt|favicon\.ico|public|assets|css|js|images|resource)  
+	RewriteRule ^(.*)$ - [PT,L]  
+	RewriteRule ^(.*)$ index.php/$1 [PT,L]  
+</ifmodule></p>
+
+<p>其中<code>my_project</code>替换为自己的项目名，即在web根目录下这个项目的文件夹名。</p>
+
